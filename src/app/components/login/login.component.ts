@@ -29,14 +29,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['test@example.com', [Validators.required, Validators.email]], // Pre-fill for testing
+      username: ['testuser', [Validators.required]], // Pre-fill for testing
       password: ['password123', [Validators.required, Validators.minLength(8)]] // Pre-fill for testing
     });
   }
 
   // getters for template
-  get email() {
-    return this.loginForm.get('email');
+  get username() {
+    return this.loginForm.get('username');
   }
 
   get password() {
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
   // Helper method for quick testing
   quickLogin() {
     this.loginForm.patchValue({
-      email: 'test@example.com',
+      username: 'testuser',
       password: 'password123'
     });
   }

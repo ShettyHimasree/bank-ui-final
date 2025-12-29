@@ -1,14 +1,42 @@
-<header class="nav">
-  <h2 routerLink="/app/dashboard">MyBank</h2>
+<header class="navbar">
+  <div class="navbar-brand">
+    <h2 routerLink="/app/dashboard">🏦 MyBank</h2>
+  </div>
 
-  <nav>
-    <a routerLink="/app/dashboard">Dashboard</a>
-    <a routerLink="/app/deposit">Deposit</a>
-    <a routerLink="/app/withdraw">Withdraw</a>
-    <a routerLink="/app/transfer">Transfer</a>
-    <a routerLink="/app/history">History</a>
-    <a routerLink="/app/contact">Contact Us</a>
+  <nav class="navbar-nav">
+    <a routerLink="/app/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="icon">📊</i> Dashboard
+    </a>
+    <a routerLink="/app/deposit" routerLinkActive="active">
+      <i class="icon">💰</i> Deposit
+    </a>
+    <a routerLink="/app/withdraw" routerLinkActive="active">
+      <i class="icon">💸</i> Withdraw
+    </a>
+    <a routerLink="/app/transfer" routerLinkActive="active">
+      <i class="icon">🔄</i> Transfer
+    </a>
+    <a routerLink="/app/history" routerLinkActive="active">
+      <i class="icon">📋</i> History
+    </a>
+    <a routerLink="/app/contact" routerLinkActive="active">
+      <i class="icon">📞</i> Contact
+    </a>
   </nav>
 
-  <button (click)="logout()">Logout</button>
+  <div class="navbar-user">
+    <div class="user-info">
+      <span class="user-name">{{ (authService.currentUser$ | async)?.fullName || 'User' }}</span>
+      <span class="user-account">A/C: {{ (authService.currentUser$ | async)?.accountNumber || '------' }}</span>
+    </div>
+    <button (click)="logout()" class="logout-btn">
+      <i class="icon">🚪</i> Logout
+    </button>
+  </div>
+
+  <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </header>

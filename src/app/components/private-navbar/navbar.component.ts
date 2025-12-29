@@ -1,20 +1,27 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-private-navbar',
   standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class PrivateNavbarComponent {
 
   private router = inject(Router);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
+  isMobileMenuOpen = false;
 
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 }

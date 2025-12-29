@@ -5,12 +5,13 @@ import { delay, map } from 'rxjs/operators';
 export interface User {
   id: string;
   email: string;
+  username: string;
   fullName: string;
   accountNumber: string;
 }
 
 export interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -56,12 +57,14 @@ export class AuthService {
     {
       id: '1',
       email: 'test@example.com',
+      username: 'testuser',
       fullName: 'Test User',
       accountNumber: '1234567890'
     },
     {
       id: '2', 
       email: 'user@bank.com',
+      username: 'johndoe',
       fullName: 'John Doe',
       accountNumber: '0987654321'
     }
@@ -74,12 +77,13 @@ export class AuthService {
     return of(null).pipe(
       delay(1000),
       map(() => {
-        // Mock validation - accept any email with password length >= 8
+        // Mock validation - accept any username with password length >= 8
         if (credentials.password.length >= 8) {
-          const user = this.mockUsers.find(u => u.email === credentials.email) || {
+          const user = this.mockUsers.find(u => u.username === credentials.username) || {
             id: Date.now().toString(),
-            email: credentials.email,
-            fullName: credentials.email.split('@')[0],
+            email: `${credentials.username}@example.com`,
+            username: credentials.username,
+            fullName: credentials.username,
             accountNumber: this.generateAccountNumber()
           };
 
@@ -111,6 +115,7 @@ export class AuthService {
         const newUser: User = {
           id: Date.now().toString(),
           email: userData.email,
+          username: userData.username,
           fullName: userData.fullName,
           accountNumber: userData.accountNumber || this.generateAccountNumber()
         };

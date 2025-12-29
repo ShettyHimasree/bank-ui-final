@@ -103,9 +103,9 @@ export class TransferComponent implements OnInit {
   }
 
   formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'INR'
     }).format(amount);
   }
 
@@ -152,7 +152,7 @@ export class TransferComponent implements OnInit {
       const result = this.authService.transfer(amount, toAccount, description);
 
       if (result.success) {
-        this.message = `Transfer successful! $${amount.toFixed(2)} sent to ${this.recipientUser.fullName}`;
+        this.message = `Transfer successful! ${this.formatCurrency(amount)} sent to ${this.recipientUser.fullName}`;
         this.messageType = 'success';
         
         // Reset form after successful transfer
@@ -194,10 +194,10 @@ export class TransferComponent implements OnInit {
       return 'Account number must be exactly 10 digits';
     }
     if (control?.hasError('min')) {
-      return 'Amount must be at least $0.01';
+      return 'Amount must be at least ₹0.01';
     }
     if (control?.hasError('max')) {
-      return 'Amount cannot exceed $999,999.99';
+      return 'Amount cannot exceed ₹9,99,999.99';
     }
     if (control?.hasError('minlength')) {
       return 'Description must be at least 3 characters';

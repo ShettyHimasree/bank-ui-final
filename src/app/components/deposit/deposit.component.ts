@@ -60,9 +60,9 @@ export class DepositComponent implements OnInit {
   }
 
   formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'INR'
     }).format(amount);
   }
 
@@ -116,10 +116,10 @@ export class DepositComponent implements OnInit {
       return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
     }
     if (control?.hasError('min')) {
-      return 'Amount must be at least $0.01';
+      return 'Amount must be at least ₹0.01';
     }
     if (control?.hasError('max')) {
-      return 'Amount cannot exceed $999,999.99';
+      return 'Amount cannot exceed ₹9,99,999.99';
     }
     if (control?.hasError('minlength')) {
       return 'Description must be at least 3 characters';

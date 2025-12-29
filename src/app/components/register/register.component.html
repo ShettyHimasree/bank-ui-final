@@ -41,21 +41,20 @@
         }
       </div>
 
-      <!-- Phone Number -->
+      <!-- Username -->
       <div class="mb-3 input-group">
-        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <label for="username" class="form-label">Username</label>
         <input
-          id="phoneNumber"
-          type="tel"
+          id="username"
+          type="text"
           class="form-control"
-          formControlName="phoneNumber"
-          placeholder="Enter 10-digit phone number"
-          autocomplete="tel"
+          formControlName="username"
+          placeholder="Enter your username"
+          autocomplete="username"
         />
-        @if (phoneNumber?.invalid && phoneNumber?.touched) {
+        @if (username?.invalid && username?.touched) {
           <div class="form-text text-warning">
-            @if (phoneNumber?.errors?.['required']) { <div>Phone number is required.</div> }
-            @if (phoneNumber?.errors?.['pattern']) { <div>Phone number must be 10 digits.</div> }
+            @if (username?.errors?.['required']) { <div>Username is required.</div> }
           </div>
         }
       </div>
@@ -99,111 +98,6 @@
         }
       </div>
 
-   <!-- Preferred Account Type -->
-<div class="mb-3">
-  <label class="form-label">Preferred Account Type</label>
-
-  <div class="radio-row">
-    <label class="form-check-inline radio-item">
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="preferredAccountType"
-        value="savings">
-      <span>Savings Account</span>
-    </label>
-
-    <label class="form-check-inline radio-item">
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="preferredAccountType"
-        value="checking">
-      <span>Current Account</span>
-    </label>
-
-    <label class="form-check-inline radio-item">
-      <input
-        class="form-check-input"
-        type="radio"
-        formControlName="preferredAccountType"
-        value="joint">
-      <span>Joint Account</span>
-    </label>
-  </div>
-</div>
-
-
-
-      <!-- Preferred Currency -->
-<div class="mb-3">
-  <label class="form-label">Preferred Currency</label>
-
-  <div class="radio-row">
-    <label class="radio-item">
-      <input
-        type="radio"
-        class="form-check-input"
-        formControlName="preferredCurrency"
-        value="USD">
-      <span>USD</span>
-    </label>
-
-    <label class="radio-item">
-      <input
-        type="radio"
-        class="form-check-input"
-        formControlName="preferredCurrency"
-        value="EUR">
-      <span>EUR</span>
-    </label>
-
-    <label class="radio-item">
-      <input
-        type="radio"
-        class="form-check-input"
-        formControlName="preferredCurrency"
-        value="INR">
-      <span>INR</span>
-    </label>
-
-    <label class="radio-item">
-      <input
-        type="radio"
-        class="form-check-input"
-        formControlName="preferredCurrency"
-        value="OTHER">
-      <span>Other</span>
-    </label>
-  </div>
-
-  @if (preferredCurrency?.invalid && preferredCurrency?.touched) {
-    <div class="form-text text-warning">
-      Preferred currency is required.
-    </div>
-  }
-</div>
-
-
-      <!-- Initial Deposit Amount -->
-      <div class="mb-3 input-group">
-        <label for="initialDepositAmount" class="form-label">Initial Deposit Amount</label>
-        <input
-          id="initialDepositAmount"
-          type="number"
-          class="form-control"
-          formControlName="initialDepositAmount"
-          placeholder="Enter initial deposit amount"
-          min="0"
-        />
-        @if (initialDepositAmount?.invalid && initialDepositAmount?.touched) {
-          <div class="form-text text-warning">
-            @if (initialDepositAmount?.errors?.['required']) { <div>Initial deposit amount is required.</div> }
-            @if (initialDepositAmount?.errors?.['min']) { <div>Amount must be positive.</div> }
-          </div>
-        }
-      </div>
-
       <!-- ID Type -->
       <div class="mb-3 input-group">
         <label for="idType" class="form-label">ID Type</label>
@@ -238,42 +132,6 @@
         }
       </div>
 
-      <!-- Occupation -->
-      <div class="mb-3 input-group">
-        <label for="occupation" class="form-label">Occupation</label>
-        <input
-          id="occupation"
-          type="text"
-          class="form-control"
-          formControlName="occupation"
-          placeholder="Enter your occupation"
-        />
-        @if (occupation?.invalid && occupation?.touched) {
-          <div class="form-text text-warning">
-            @if (occupation?.errors?.['required']) { <div>Occupation is required.</div> }
-          </div>
-        }
-      </div>
-    <!--
-          
-             // Employer Name
-      <div class="mb-3 input-group">
-        <label for="employerName" class="form-label">Employer Name</label>
-        <input
-          id="employerName"
-          type="text"
-          class="form-control"
-          formControlName="employerName"
-          placeholder="Enter your employer name"
-        />
-        @if (employerName?.invalid && employerName?.touched) {
-          <div class="form-text text-warning">
-            @if (employerName?.errors?.['required']) { <div>Employer name is required.</div> }
-          </div>
-        }
-      </div>
-    -->
-
       <!-- Declaration Checkbox -->
       <div class="mb-3 input-group">
         <div class="form-check">
@@ -288,20 +146,6 @@
           </div>
         }
       </div>
-
-      <!-- Date -->
-      <div class="mb-3 input-group">
-        <label for="date" class="form-label">Date</label>
-        <input
-          id="date"
-          type="date"
-          class="form-control"
-          formControlName="date"
-          readonly
-        />
-      </div>
-
-
 
       <!-- Password -->
       <div class="mb-3 input-group">
