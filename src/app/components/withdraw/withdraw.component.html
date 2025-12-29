@@ -1,0 +1,126 @@
+<div class="withdraw-container">
+  <div class="withdraw-header">
+    <h1>💸 Withdraw Money</h1>
+    <p class="subtitle">Take money out of your account</p>
+  </div>
+
+  <!-- Current Balance Display -->
+  <div class="balance-info">
+    <div class="balance-card">
+      <div class="balance-label">Current Balance</div>
+      <div class="balance-amount">{{ formatCurrency(currentBalance) }}</div>
+    </div>
+  </div>
+
+  <!-- Balance Warning -->
+  <div *ngIf="withdrawForm.get('amount')?.value && wouldExceedBalance()" class="balance-warning">
+    <div class="warning-icon">⚠️</div>
+    <div class="warning-text">
+      <strong>Insufficient Balance!</strong>
+      <p>You cannot withdraw more than your current balance of {{ formatCurrency(currentBalance) }}</p>
+    </div>
+  </div>
+
+  <!-- Withdraw Form -->
+  <div class="withdraw-form-container">
+    <form [formGroup]="withdrawForm" (ngSubmit)="onSubmit()" class="withdraw-form">
+      
+      <!-- Amount Field -->
+      <div class="form-group">
+        <label for="amount" class="form-label">
+          <span class="label-icon">💵</span>
+          Withdrawal Amount
+        </label>
+        <div class="input-wrapper">
+          <span class="currency-symbol">$</span>
+          <input
+            type="text"
+            id="amount"
+            formControlName="amount"
+            class="form-input amount-input"
+            placeholder="0.00"
+            (input)="onAmountInput($event)"
+            [class.error]="(amount?.invalid && amount?.touched) || wouldExceedBalance()"
+            autocomplete="off"
+          />
+        </div>
+        <div *ngIf="amount?.invalid && amount?.touched" class="error-message">
+          {{ getErrorMessage('amount') }}
+        </div>
+        <div *ngIf="wouldExceedBalance()" class="error-message">
+          Amount exceeds current balance
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description" class="form-label">
+          <span class="label-icon">📝</span>
+          Description
+        </label>
+        <input
+          type="text"
+          id="description"
+          formControlName="description"
+          class="form-input"
+          placeholder="Enter withdrawal description"
+          [class.error]="description?.invalid && description?.touched"
+        />
+        <div *ngIf="description?.invalid && description?.touched" class="error-message">
+          {{ getErrorMessage('description') }}
+        </div>
+      </div>
+
+      <!-- New Balance Preview -->
+      <div *ngIf="withdrawForm.get('amount')?.value && !wouldExceedBalance()" class="balance-preview">
+        <div class="preview-card">
+          <div class="preview-label">New Balance After Withdrawal</div>
+          <div class="preview-amount">
+            {{ formatCurrency(getNewBalance()) }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Success/Error Messages -->
+      <div *ngIf="message" class="message-container" [ngClass]="messageType">
+        <div class="message-icon">
+          <span *ngIf="messageType === 'success'">✅</span>
+          <span *ngIf="messageType === 'error'">❌</span>
+        </div>
+        <div class="message-text">{{ message }}</div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goBack()"
+          [disabled]="isLoading"
+        >
+          ← Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="withdrawForm.invalid || isLoading || wouldExceedBalance()"
+        >
+          <span *ngIf="!isLoading">💸 Withdraw Money</span>
+          <span *ngIf="isLoading" class="loading-spinner">⏳ Processing...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Withdrawal Tips -->
+  <div class="withdraw-tips">
+    <h3>💡 Withdrawal Tips</h3>
+    <ul class="tips-list">
+      <li>Minimum withdrawal amount: $0.01</li>
+      <li>Maximum withdrawal amount: Your current balance</li>
+      <li>Withdrawals are processed instantly</li>
+      <li>You can add a custom description for your records</li>
+      <li>Make sure to keep sufficient balance for future transactions</li>
+    </ul>
+  </div>
+</div>

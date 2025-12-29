@@ -1,0 +1,234 @@
+<div class="contact-container">
+  <div class="contact-header">
+    <h1>📞 Contact Us</h1>
+    <p class="subtitle">Get in touch with our support team</p>
+  </div>
+
+  <!-- Quick Contact Section -->
+  <div class="quick-contact-section">
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <h3>Call Support</h3>
+        <p>{{ contactInfo.phone }}</p>
+        <p class="contact-hours">{{ contactInfo.hours }}</p>
+        <button class="contact-btn primary" (click)="callSupport()">
+          Call Now
+        </button>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <h3>Email Support</h3>
+        <p>{{ contactInfo.email }}</p>
+        <p class="contact-hours">Response within 24 hours</p>
+        <button class="contact-btn secondary" (click)="emailSupport()">
+          Send Email
+        </button>
+      </div>
+
+      <div class="contact-card emergency">
+        <div class="contact-icon">🚨</div>
+        <h3>Emergency</h3>
+        <p>{{ contactInfo.emergency }}</p>
+        <p class="contact-hours">24/7 Fraud & Security</p>
+        <button class="contact-btn emergency" (click)="callEmergency()">
+          Call Emergency
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Form Section -->
+  <div class="contact-form-section">
+    <div class="form-container">
+      <h2>Send us a Message</h2>
+      <p class="form-subtitle">Fill out the form below and we'll get back to you as soon as possible</p>
+
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+        
+        <!-- Name Field -->
+        <div class="form-group">
+          <label for="name" class="form-label">
+            <span class="label-icon">👤</span>
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-input"
+            placeholder="Enter your full name"
+            [class.error]="name?.invalid && name?.touched"
+          />
+          <div *ngIf="name?.invalid && name?.touched" class="error-message">
+            {{ getErrorMessage('name') }}
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <span class="label-icon">📧</span>
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-input"
+            placeholder="Enter your email address"
+            [class.error]="email?.invalid && email?.touched"
+          />
+          <div *ngIf="email?.invalid && email?.touched" class="error-message">
+            {{ getErrorMessage('email') }}
+          </div>
+        </div>
+
+        <!-- Category Field -->
+        <div class="form-group">
+          <label for="category" class="form-label">
+            <span class="label-icon">📂</span>
+            Category
+          </label>
+          <select
+            id="category"
+            formControlName="category"
+            class="form-select"
+            [class.error]="category?.invalid && category?.touched"
+          >
+            <option value="">Select a category</option>
+            <option *ngFor="let cat of categories" [value]="cat.value">
+              {{ cat.label }}
+            </option>
+          </select>
+          <div *ngIf="category?.invalid && category?.touched" class="error-message">
+            {{ getErrorMessage('category') }}
+          </div>
+        </div>
+
+        <!-- Subject Field -->
+        <div class="form-group">
+          <label for="subject" class="form-label">
+            <span class="label-icon">📝</span>
+            Subject
+          </label>
+          <div class="subject-suggestions">
+            <div class="suggestion-tags">
+              <button
+                type="button"
+                *ngFor="let subject of subjectOptions"
+                class="suggestion-tag"
+                (click)="suggestSubject(subject)"
+              >
+                {{ subject }}
+              </button>
+            </div>
+          </div>
+          <input
+            type="text"
+            id="subject"
+            formControlName="subject"
+            class="form-input"
+            placeholder="Brief description of your inquiry"
+            [class.error]="subject?.invalid && subject?.touched"
+          />
+          <div *ngIf="subject?.invalid && subject?.touched" class="error-message">
+            {{ getErrorMessage('subject') }}
+          </div>
+        </div>
+
+        <!-- Message Field -->
+        <div class="form-group">
+          <label for="message" class="form-label">
+            <span class="label-icon">💬</span>
+            Message
+          </label>
+          <textarea
+            id="message"
+            formControlName="message"
+            class="form-textarea"
+            placeholder="Please describe your inquiry in detail..."
+            rows="6"
+            [class.error]="messageField?.invalid && messageField?.touched"
+          ></textarea>
+          
+          <!-- Character Counter -->
+          <div class="char-counter" [class.warning]="getRemainingChars() < 100" [class.error]="getRemainingChars() < 0">
+            {{ getRemainingChars() }} characters remaining
+          </div>
+          
+          <div *ngIf="messageField?.invalid && messageField?.touched" class="error-message">
+            {{ getErrorMessage('message') }}
+          </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div *ngIf="message" class="message-container" [ngClass]="messageType">
+          <div class="message-icon">
+            <span *ngIf="messageType === 'success'">✅</span>
+            <span *ngIf="messageType === 'error'">❌</span>
+          </div>
+          <div class="message-text">{{ message }}</div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="clearForm()"
+            [disabled]="isLoading"
+          >
+            🔄 Clear Form
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="contactForm.invalid || isLoading"
+          >
+            <span *ngIf="!isLoading">📤 Send Message</span>
+            <span *ngIf="isLoading" class="loading-spinner">⏳ Sending...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Additional Information -->
+  <div class="additional-info">
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🕒 Response Times</h3>
+        <ul>
+          <li><strong>General Inquiries:</strong> 24 hours</li>
+          <li><strong>Technical Support:</strong> 12 hours</li>
+          <li><strong>Security Issues:</strong> 2 hours</li>
+          <li><strong>Emergency:</strong> Immediate</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>📋 Before You Contact Us</h3>
+        <ul>
+          <li>Check our FAQ section</li>
+          <li>Review your recent transactions</li>
+          <li>Have your account details ready</li>
+          <li>Take screenshots if applicable</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>🔒 Your Privacy</h3>
+        <p>All communications are encrypted and secure. We never share your personal information with third parties.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Dashboard -->
+  <div class="back-section">
+    <button class="btn btn-secondary" (click)="goBack()">
+      ← Back to Dashboard
+    </button>
+  </div>
+</div>

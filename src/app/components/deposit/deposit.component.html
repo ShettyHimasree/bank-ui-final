@@ -1,0 +1,103 @@
+<div class="deposit-container">
+  <div class="deposit-header">
+    <h1>💰 Deposit Money</h1>
+    <p class="subtitle">Add funds to your account</p>
+  </div>
+
+  <!-- Current Balance Display -->
+  <div class="balance-info">
+    <div class="balance-card">
+      <div class="balance-label">Current Balance</div>
+      <div class="balance-amount">{{ formatCurrency(currentBalance) }}</div>
+    </div>
+  </div>
+
+  <!-- Deposit Form -->
+  <div class="deposit-form-container">
+    <form [formGroup]="depositForm" (ngSubmit)="onSubmit()" class="deposit-form">
+      
+      <!-- Amount Field -->
+      <div class="form-group">
+        <label for="amount" class="form-label">
+          <span class="label-icon">💵</span>
+          Deposit Amount
+        </label>
+        <div class="input-wrapper">
+          <span class="currency-symbol">$</span>
+          <input
+            type="text"
+            id="amount"
+            formControlName="amount"
+            class="form-input amount-input"
+            placeholder="0.00"
+            (input)="onAmountInput($event)"
+            [class.error]="amount?.invalid && amount?.touched"
+            autocomplete="off"
+          />
+        </div>
+        <div *ngIf="amount?.invalid && amount?.touched" class="error-message">
+          {{ getErrorMessage('amount') }}
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description" class="form-label">
+          <span class="label-icon">📝</span>
+          Description
+        </label>
+        <input
+          type="text"
+          id="description"
+          formControlName="description"
+          class="form-input"
+          placeholder="Enter deposit description"
+          [class.error]="description?.invalid && description?.touched"
+        />
+        <div *ngIf="description?.invalid && description?.touched" class="error-message">
+          {{ getErrorMessage('description') }}
+        </div>
+      </div>
+
+      <!-- Success/Error Messages -->
+      <div *ngIf="message" class="message-container" [ngClass]="messageType">
+        <div class="message-icon">
+          <span *ngIf="messageType === 'success'">✅</span>
+          <span *ngIf="messageType === 'error'">❌</span>
+        </div>
+        <div class="message-text">{{ message }}</div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goBack()"
+          [disabled]="isLoading"
+        >
+          ← Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="depositForm.invalid || isLoading"
+        >
+          <span *ngIf="!isLoading">💰 Deposit Money</span>
+          <span *ngIf="isLoading" class="loading-spinner">⏳ Processing...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Deposit Tips -->
+  <div class="deposit-tips">
+    <h3>💡 Deposit Tips</h3>
+    <ul class="tips-list">
+      <li>Minimum deposit amount: $0.01</li>
+      <li>Maximum deposit amount: $999,999.99</li>
+      <li>Deposits are processed instantly</li>
+      <li>You can add a custom description for your records</li>
+    </ul>
+  </div>
+</div>

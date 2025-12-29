@@ -1,0 +1,183 @@
+<div class="transfer-container">
+  <div class="transfer-header">
+    <h1>🔄 Transfer Money</h1>
+    <p class="subtitle">Send money to another account</p>
+  </div>
+
+  <!-- Current Balance Display -->
+  <div class="balance-info">
+    <div class="balance-card">
+      <div class="balance-label">Current Balance</div>
+      <div class="balance-amount">{{ formatCurrency(currentBalance) }}</div>
+    </div>
+  </div>
+
+  <!-- Balance Warning -->
+  <div *ngIf="transferForm.get('amount')?.value && wouldExceedBalance()" class="balance-warning">
+    <div class="warning-icon">⚠️</div>
+    <div class="warning-text">
+      <strong>Insufficient Balance!</strong>
+      <p>You cannot transfer more than your current balance of {{ formatCurrency(currentBalance) }}</p>
+    </div>
+  </div>
+
+  <!-- Transfer Form -->
+  <div class="transfer-form-container">
+    <form [formGroup]="transferForm" (ngSubmit)="onSubmit()" class="transfer-form">
+      
+      <!-- Recipient Account Field -->
+      <div class="form-group">
+        <label for="toAccount" class="form-label">
+          <span class="label-icon">👤</span>
+          Recipient Account Number
+        </label>
+        <input
+          type="text"
+          id="toAccount"
+          formControlName="toAccount"
+          class="form-input"
+          placeholder="1234567890"
+          (input)="onAccountInput($event)"
+          [class.error]="(toAccount?.invalid && toAccount?.touched) || (toAccount?.value && !recipientUser)"
+          autocomplete="off"
+        />
+        
+        <!-- Recipient Information -->
+        <div *ngIf="recipientUser" class="recipient-info">
+          <div class="recipient-details">
+            <span class="recipient-name">✅ {{ recipientUser.fullName }}</span>
+            <span class="recipient-email">{{ recipientUser.email }}</span>
+          </div>
+        </div>
+        
+        <!-- Account Not Found Warning -->
+        <div *ngIf="toAccount?.value && toAccount?.value.length === 10 && !recipientUser" class="account-not-found">
+          <span class="not-found-icon">❌</span>
+          <span class="not-found-text">Account not found. Please check the account number.</span>
+        </div>
+        
+        <div *ngIf="toAccount?.invalid && toAccount?.touched" class="error-message">
+          {{ getErrorMessage('toAccount') }}
+        </div>
+      </div>
+
+      <!-- Amount Field -->
+      <div class="form-group">
+        <label for="amount" class="form-label">
+          <span class="label-icon">💵</span>
+          Transfer Amount
+        </label>
+        <div class="input-wrapper">
+          <span class="currency-symbol">$</span>
+          <input
+            type="text"
+            id="amount"
+            formControlName="amount"
+            class="form-input amount-input"
+            placeholder="0.00"
+            (input)="onAmountInput($event)"
+            [class.error]="(amount?.invalid && amount?.touched) || wouldExceedBalance()"
+            autocomplete="off"
+          />
+        </div>
+        <div *ngIf="amount?.invalid && amount?.touched" class="error-message">
+          {{ getErrorMessage('amount') }}
+        </div>
+        <div *ngIf="wouldExceedBalance()" class="error-message">
+          Amount exceeds current balance
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description" class="form-label">
+          <span class="label-icon">📝</span>
+          Description
+        </label>
+        <input
+          type="text"
+          id="description"
+          formControlName="description"
+          class="form-input"
+          placeholder="Enter transfer description"
+          [class.error]="description?.invalid && description?.touched"
+        />
+        <div *ngIf="description?.invalid && description?.touched" class="error-message">
+          {{ getErrorMessage('description') }}
+        </div>
+      </div>
+
+      <!-- New Balance Preview -->
+      <div *ngIf="transferForm.get('amount')?.value && !wouldExceedBalance()" class="balance-preview">
+        <div class="preview-card">
+          <div class="preview-label">New Balance After Transfer</div>
+          <div class="preview-amount">{{ formatCurrency(getNewBalance()) }}</div>
+        </div>
+      </div>
+
+      <!-- Success/Error Messages -->
+      <div *ngIf="message" class="message-container" [ngClass]="messageType">
+        <div class="message-icon">
+          <span *ngIf="messageType === 'success'">✅</span>
+          <span *ngIf="messageType === 'error'">❌</span>
+        </div>
+        <div class="message-text">{{ message }}</div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="goBack()"
+          [disabled]="isLoading"
+        >
+          ← Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="transferForm.invalid || isLoading || wouldExceedBalance() || !recipientUser"
+        >
+          <span *ngIf="!isLoading">🔄 Transfer Money</span>
+          <span *ngIf="isLoading" class="loading-spinner">⏳ Processing...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Available Accounts (for testing) -->
+  <div *ngIf="availableAccounts.length > 0" class="available-accounts">
+    <h3>📋 Available Test Accounts</h3>
+    <p class="accounts-subtitle">Use these account numbers for testing transfers:</p>
+    <div class="accounts-list">
+      <div *ngFor="let account of availableAccounts" class="account-item">
+        <div class="account-number">{{ formatAccountNumber(account.accountNumber) }}</div>
+        <div class="account-details">
+          <span class="account-name">{{ account.fullName }}</span>
+          <span class="account-email">{{ account.email }}</span>
+        </div>
+        <button 
+          type="button" 
+          class="btn-use-account"
+          (click)="transferForm.patchValue({ toAccount: account.accountNumber }); findRecipient()"
+        >
+          Use
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transfer Tips -->
+  <div class="transfer-tips">
+    <h3>💡 Transfer Tips</h3>
+    <ul class="tips-list">
+      <li>Account numbers must be exactly 10 digits</li>
+      <li>Minimum transfer amount: $0.01</li>
+      <li>Maximum transfer amount: Your current balance</li>
+      <li>Transfers are processed instantly</li>
+      <li>You cannot transfer to your own account</li>
+      <li>Make sure to verify the recipient account number</li>
+    </ul>
+  </div>
+</div>

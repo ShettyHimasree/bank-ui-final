@@ -1,0 +1,396 @@
+/* Withdraw Container */
+.withdraw-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Header */
+.withdraw-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.withdraw-header h1 {
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Balance Information */
+.balance-info {
+  margin-bottom: 20px;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.balance-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+.balance-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Balance Warning */
+.balance-warning {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #856404;
+}
+
+.warning-icon {
+  font-size: 1.5rem;
+}
+
+.warning-text strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.warning-text p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Form Container */
+.withdraw-form-container {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.label-icon {
+  font-size: 1.2rem;
+}
+
+/* Input Wrapper */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 15px;
+  color: #7f8c8d;
+  font-weight: 600;
+  font-size: 1.1rem;
+  z-index: 1;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.amount-input {
+  padding-left: 45px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #e17055;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(225, 112, 85, 0.1);
+}
+
+.form-input.error {
+  border-color: #e74c3c;
+  background: #fdf2f2;
+}
+
+.form-input::placeholder {
+  color: #bdc3c7;
+}
+
+/* Balance Preview */
+.balance-preview {
+  margin-bottom: 25px;
+}
+
+.preview-card {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.preview-label {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.preview-amount {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Error Messages */
+.error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.error-message::before {
+  content: "⚠️";
+}
+
+/* Message Container */
+.message-container {
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.message-container.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message-container.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.message-icon {
+  font-size: 1.2rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.form-actions .btn {
+  flex: 1;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(225, 112, 85, 0.3);
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 2px solid #e9ecef;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Withdrawal Tips */
+.withdraw-tips {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border-left: 4px solid #e17055;
+}
+
+.withdraw-tips h3 {
+  color: #2c3e50;
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tips-list {
+  margin: 0;
+  padding-left: 20px;
+  color: #5a6c7d;
+}
+
+.tips-list li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.tips-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .withdraw-container {
+    padding: 15px;
+  }
+
+  .withdraw-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .balance-amount {
+    font-size: 2rem;
+  }
+
+  .withdraw-form-container {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .withdraw-tips {
+    padding: 20px;
+  }
+
+  .balance-warning {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .withdraw-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .balance-amount {
+    font-size: 1.8rem;
+  }
+
+  .form-input {
+    padding: 12px 15px;
+  }
+
+  .amount-input {
+    padding-left: 40px;
+  }
+
+  .currency-symbol {
+    left: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* Animation for success message */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-container,
+.balance-warning {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Shake animation for validation errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.form-input.error {
+  animation: shake 0.5s ease-in-out;
+}

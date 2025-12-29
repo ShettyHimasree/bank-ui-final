@@ -1,0 +1,111 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Welcome back, {{ user?.fullName || 'User' }}!</h1>
+    <p class="subtitle">Here's your account overview</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!isLoading" class="dashboard-content">
+    
+    <!-- Account Summary Cards -->
+    <div class="account-summary">
+      <div class="balance-card">
+        <div class="card-header">
+          <h3>Current Balance</h3>
+          <span class="account-number">Account: {{ user?.accountNumber }}</span>
+        </div>
+        <div class="balance-amount">{{ formatCurrency(balance) }}</div>
+      </div>
+
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-content">
+            <h4>Total Deposits</h4>
+            <p>{{ formatCurrency(getTotalDeposits()) }}</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">💸</div>
+          <div class="stat-content">
+            <h4>Total Withdrawals</h4>
+            <p>{{ formatCurrency(getTotalWithdrawals()) }}</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🔄</div>
+          <div class="stat-content">
+            <h4>Total Transfers</h4>
+            <p>{{ formatCurrency(getTotalTransfers()) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3>Quick Actions</h3>
+      <div class="action-buttons">
+        <a routerLink="/app/deposit" class="action-btn deposit-btn">
+          <span class="action-icon">⬆️</span>
+          <span>Deposit Money</span>
+        </a>
+        <a routerLink="/app/withdraw" class="action-btn withdraw-btn">
+          <span class="action-icon">⬇️</span>
+          <span>Withdraw Money</span>
+        </a>
+        <a routerLink="/app/transfer" class="action-btn transfer-btn">
+          <span class="action-icon">🔄</span>
+          <span>Transfer Money</span>
+        </a>
+        <a routerLink="/app/history" class="action-btn history-btn">
+          <span class="action-icon">📊</span>
+          <span>View History</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="recent-transactions">
+      <div class="transactions-header">
+        <h3>Recent Transactions</h3>
+        <a routerLink="/app/history" class="view-all-link">View All →</a>
+      </div>
+
+      <div *ngIf="recentTransactions.length === 0" class="no-transactions">
+        <div class="empty-state">
+          <span class="empty-icon">💳</span>
+          <h4>No transactions yet</h4>
+          <p>Start by making a deposit or transfer</p>
+        </div>
+      </div>
+
+      <div *ngIf="recentTransactions.length > 0" class="transactions-list">
+        <div *ngFor="let transaction of recentTransactions" 
+             class="transaction-item" 
+             [ngClass]="getTransactionTypeClass(transaction.type)">
+          <div class="transaction-icon">
+            {{ getTransactionTypeIcon(transaction.type) }}
+          </div>
+          <div class="transaction-details">
+            <div class="transaction-description">{{ transaction.description }}</div>
+            <div class="transaction-date">{{ formatDate(transaction.date) }}</div>
+          </div>
+          <div class="transaction-amount">
+            <span *ngIf="transaction.type === 'deposit'" class="positive">+{{ formatCurrency(transaction.amount) }}</span>
+            <span *ngIf="transaction.type === 'withdraw'" class="negative">-{{ formatCurrency(transaction.amount) }}</span>
+            <span *ngIf="transaction.type === 'transfer'" class="neutral">{{ formatCurrency(transaction.amount) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

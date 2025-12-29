@@ -1,0 +1,192 @@
+<div class="history-container">
+  <div class="history-header">
+    <h1>📊 Transaction History</h1>
+    <p class="subtitle">View and manage your transaction records</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading transaction history...</p>
+  </div>
+
+  <!-- History Content -->
+  <div *ngIf="!isLoading" class="history-content">
+    
+    <!-- Controls Section -->
+    <div class="controls-section">
+      <div class="controls-row">
+        
+        <!-- Search -->
+        <div class="search-container">
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchChange()"
+            placeholder="Search transactions..."
+            class="search-input"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <!-- Filter by Type -->
+        <div class="filter-container">
+          <select [(ngModel)]="filterType" (ngModelChange)="onFilterChange()" class="filter-select">
+            <option value="all">All Transactions</option>
+            <option value="deposit">Deposits Only</option>
+            <option value="withdraw">Withdrawals Only</option>
+            <option value="transfer">Transfers Only</option>
+          </select>
+        </div>
+
+        <!-- Export Button -->
+        <button class="btn-export" (click)="exportTransactions()" [disabled]="filteredTransactions.length === 0">
+          📥 Export CSV
+        </button>
+
+        <!-- Clear Filters -->
+        <button class="btn-clear" (click)="clearFilters()">
+          🔄 Clear Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Transactions Summary -->
+    <div class="summary-section">
+      <div class="summary-card">
+        <div class="summary-item">
+          <span class="summary-label">Total Transactions:</span>
+          <span class="summary-value">{{ filteredTransactions.length }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Filtered From:</span>
+          <span class="summary-value">{{ allTransactions.length }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredTransactions.length === 0" class="empty-state">
+      <div class="empty-icon">📊</div>
+      <h3>No transactions found</h3>
+      <p *ngIf="allTransactions.length === 0">You haven't made any transactions yet.</p>
+      <p *ngIf="allTransactions.length > 0">Try adjusting your search or filter criteria.</p>
+      <button *ngIf="allTransactions.length > 0" class="btn btn-primary" (click)="clearFilters()">
+        Clear All Filters
+      </button>
+    </div>
+
+    <!-- Transactions Table -->
+    <div *ngIf="filteredTransactions.length > 0" class="transactions-section">
+      <div class="table-container">
+        <table class="transactions-table">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="onSortChange('date')">
+                Date
+                <span class="sort-indicator" [class]="sortBy === 'date' ? sortOrder : ''">
+                  {{ sortBy === 'date' ? (sortOrder === 'asc' ? '↑' : '↓') : '↕️' }}
+                </span>
+              </th>
+              <th class="sortable" (click)="onSortChange('type')">
+                Type
+                <span class="sort-indicator" [class]="sortBy === 'type' ? sortOrder : ''">
+                  {{ sortBy === 'type' ? (sortOrder === 'asc' ? '↑' : '↓') : '↕️' }}
+                </span>
+              </th>
+              <th class="sortable" (click)="onSortChange('description')">
+                Description
+                <span class="sort-indicator" [class]="sortBy === 'description' ? sortOrder : ''">
+                  {{ sortBy === 'description' ? (sortOrder === 'asc' ? '↑' : '↓') : '↕️' }}
+                </span>
+              </th>
+              <th class="sortable" (click)="onSortChange('amount')">
+                Amount
+                <span class="sort-indicator" [class]="sortBy === 'amount' ? sortOrder : ''">
+                  {{ sortBy === 'amount' ? (sortOrder === 'asc' ? '↑' : '↓') : '↕️' }}
+                </span>
+              </th>
+              <th>Balance</th>
+              <th>Accounts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of paginatedTransactions" class="transaction-row">
+              <td class="transaction-date">
+                {{ formatDate(transaction.date) }}
+              </td>
+              <td class="transaction-type">
+                <span class="type-badge" [ngClass]="getTransactionTypeClass(transaction.type)">
+                  <span class="type-icon">{{ getTransactionTypeIcon(transaction.type) }}</span>
+                  {{ transaction.type | titlecase }}
+                </span>
+              </td>
+              <td class="transaction-description">
+                {{ transaction.description }}
+              </td>
+              <td class="transaction-amount">
+                <span [ngClass]="getTransactionAmountClass(transaction)">
+                  {{ getTransactionAmount(transaction) }}
+                </span>
+              </td>
+              <td class="transaction-balance">
+                {{ formatCurrency(transaction.balance) }}
+              </td>
+              <td class="transaction-accounts">
+                <div *ngIf="transaction.fromAccount" class="account-info">
+                  <small>From: {{ transaction.fromAccount }}</small>
+                </div>
+                <div *ngIf="transaction.toAccount" class="account-info">
+                  <small>To: {{ transaction.toAccount }}</small>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-section" *ngIf="totalPages > 1">
+        <div class="pagination-info">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ getCurrentPageEnd() }} of {{ filteredTransactions.length }} transactions
+        </div>
+        
+        <div class="pagination-controls">
+          <button 
+            class="pagination-btn" 
+            (click)="changePage(currentPage - 1)" 
+            [disabled]="currentPage === 1"
+          >
+            ← Previous
+          </button>
+          
+          <div class="page-numbers">
+            <button 
+              *ngFor="let page of getPageNumbers()" 
+              class="page-btn" 
+              [class.active]="page === currentPage"
+              (click)="changePage(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
+          
+          <button 
+            class="pagination-btn" 
+            (click)="changePage(currentPage + 1)" 
+            [disabled]="currentPage === totalPages"
+          >
+            Next →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to Dashboard -->
+    <div class="back-section">
+      <button class="btn btn-secondary" (click)="goBack()">
+        ← Back to Dashboard
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,149 @@
+/* Navbar in normal flow (scrolls with page) */
+.navbar {
+  position: relative;      /* not fixed */
+  height: 64px;            /* ensure this matches your real nav height */
+  background: linear-gradient(135deg,#003973,#E5E5BE);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Full-page content below navbar, centered and scrollable */
+.profile-container {
+  height: calc(100vh - 64px);         /* viewport height minus navbar */
+  width: 100%;
+  display: flex;
+  justify-content: center;            /* horizontal */
+  align-items: center;                /* vertical */
+  background: linear-gradient(90deg, #003973 0%, #E5E5BE 100%);
+  padding: 24px;
+  overflow-y: auto;                   /* allow scroll if content grows */
+  box-sizing: border-box;
+}
+
+/* Centered card (no absolute positioning) */
+.card {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(90deg, #003973 0%, #E5E5BE 100%);
+  color: #fff;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Headings */
+.card h1, .card h6 {
+  color: #fff;
+}
+
+/* Profile Details Display */
+.profile-details {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: bold;
+  color: #fff;
+  flex: 0 0 150px;
+}
+
+.value {
+  color: #fff;
+  flex: 1;
+  text-align: right;
+}
+
+/* Inputs readable on gradient */
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group label { font-weight: bold; color: #fff; }
+.input-group input, .input-group textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.92);
+  color: #000;
+}
+
+/* Submit Button */
+.btn.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background-color: #003973;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.btn.btn-primary:hover { background-color: #E5E5BE; color: #000; }
+.btn.btn-primary:disabled { background-color: #a0c8f0; cursor: not-allowed; }
+
+.btn.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  background-color: #6c757d;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+}
+.btn.btn-secondary:hover { background-color: #5a6268; }
+
+/* Messages */
+.error-message, .success-message { margin-top: 15px; font-size: 1rem; }
+.error-message { color: #ffdddd; }
+.success-message { color: #ddffdd; }
+
+/* Link */
+a { color: #fff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 16px;
+  }
+  .card {
+    padding: 24px;
+    max-width: 100%;
+  }
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .label {
+    flex: none;
+    margin-bottom: 5px;
+  }
+  .value {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 16px; }
+  .input-group input, .input-group textarea {
+    padding: 8px;
+  }
+  .btn.btn-primary, .btn.btn-secondary {
+    padding: 10px;
+  }
+}
